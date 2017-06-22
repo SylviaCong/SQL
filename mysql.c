@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	}
 
 	//连接数据库
-	db = mysql_real_connect(db, "127.0.0.1", "root", "1", "mydb",  3306, NULL, 0);
+	db = mysql_real_connect(db, "127.0.0.1", "root", "123456", "stu",  3306, NULL, 0);
 	if (db == NULL)
 	{
 		printf("mysql_real_connect fail:%s\n", mysql_error(db));

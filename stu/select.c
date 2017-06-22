@@ -21,6 +21,8 @@ int cgiMain()
 
 
 	char sno[12] = "\0";
+  char school_id[10] = "\0";
+  char cno[10] = "\0";
 	int status = 0;
 
 	char ch;
@@ -44,19 +46,32 @@ fclose(fd);
 		fprintf(cgiOut, "get sno error!\n");
 		return 1;
 	}
+  status = cgiFormString("school_id",  school_id, 10);
+  if (status != cgiFormSuccess)
+  {
+    fprintf(cgiOut, "get school_id error!\n");
+    return 1;
+  }
+  status = cgiFormString("cno",  cno, 10);
+  if (status != cgiFormSuccess)
+  {
+    fprintf(cgiOut, "get cno error!\n");
+    return 1;
+  }
 
 	int ret;
 	MYSQL *db;
 	char sql[128] = "\0";
+  sprintf(sql, "select information.sno,school.school_id,course.cno,score from information,school,course,score where information.sno=score.sno and school.school_id=score.school_id and course.cno=score.cno and score.sno= %d and score.school_id=%d and score.cno=%d",atoi(sno),atoi(school_id),atoi(cno));
 
-	if (sno[0] == '*')
+	/*if (sno[0] == '*')
 	{
 		sprintf(sql, "select * from information");
 	}
 	else
 	{
 		sprintf(sql, "select * from information where sno = %d ", atoi(sno));
-	}
+	}*/
 
 
 	//初始化
@@ -124,7 +139,7 @@ fclose(fd);
 		fprintf(cgiOut,"</tr>");
 	}
 	fprintf(cgiOut,"</table></div>");
-	fprintf(cgiOut, "<div class=\"container\"><h5 class=\"text-center\">查询结果是否正确呢</h5>");
+	
 
 
 	mysql_close(db);
